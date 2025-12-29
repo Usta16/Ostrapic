@@ -22,18 +22,20 @@ local Ostrapic = {
     }
 }
 
-local BaseURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
+-- Updated URL with Ostrapic folder
+local BaseURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/Ostrapic/"
 
 local function LoadModule(path)
+    local url = BaseURL .. path .. ".lua"
     local success, result = pcall(function()
-        return loadstring(game:HttpGet(BaseURL .. path .. ".lua"))()
+        return loadstring(game:HttpGet(url))()
     end)
     
     if success then
         return result
     else
-        warn("[Ostrapic] Failed to load module: " .. path)
-        warn(result)
+        warn("[Ostrapic] Failed to load: " .. url)
+        warn("[Ostrapic] Error: " .. tostring(result))
         return nil
     end
 end
