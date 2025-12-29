@@ -1,10 +1,13 @@
 --[[
     Ostrapic UI Library v2.1
-    Main Loader
+    Created by Usta16
+    
+    GitHub: https://github.com/Usta16/Ostrapic
 ]]
 
 local Ostrapic = {
     Version = "2.1.0",
+    Creator = "Usta16",
     Theme = {
         Primary = Color3.fromRGB(99, 102, 241),
         Background = Color3.fromRGB(15, 15, 20),
@@ -19,20 +22,29 @@ local Ostrapic = {
     }
 }
 
--- Base URL for loading modules
 local BaseURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
 
--- Load modules
 local function LoadModule(path)
-    return loadstring(game:HttpGet(BaseURL .. path .. ".lua"))()
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(BaseURL .. path .. ".lua"))()
+    end)
+    
+    if success then
+        return result
+    else
+        warn("[Ostrapic] Failed to load module: " .. path)
+        warn(result)
+        return nil
+    end
 end
 
--- Core modules
+-- Load core modules
 Ostrapic.Utility = LoadModule("Utility")
 Ostrapic.Notify = LoadModule("Notify")
 Ostrapic.Window = LoadModule("Window")
+Ostrapic.Tab = LoadModule("Tab")
 
--- Component modules
+-- Load components
 Ostrapic.Components = {
     Toggle = LoadModule("Components/Toggle"),
     Slider = LoadModule("Components/Slider"),
