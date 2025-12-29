@@ -18,7 +18,6 @@ function Notify.new(Ostrapic, config)
     local Player = Players.LocalPlayer
     local PlayerGui = Player:WaitForChild("PlayerGui")
     
-    -- Get or create notification container
     local screenGui = PlayerGui:FindFirstChild("OstrapicNotify")
     if not screenGui then
         screenGui = Create("ScreenGui", {
@@ -45,7 +44,6 @@ function Notify.new(Ostrapic, config)
     
     local container = screenGui.Container
     
-    -- Type colors
     local typeColors = {
         Info = Theme.Primary,
         Success = Theme.Success,
@@ -55,7 +53,6 @@ function Notify.new(Ostrapic, config)
     
     local accentColor = typeColors[config.Type] or Theme.Primary
     
-    -- Create notification
     local notification = Create("Frame", {
         Name = "Notification",
         BackgroundColor3 = Theme.Card,
@@ -72,7 +69,6 @@ function Notify.new(Ostrapic, config)
         Parent = notification
     })
     
-    -- Accent bar
     local accent = Create("Frame", {
         Name = "Accent",
         BackgroundColor3 = accentColor,
@@ -82,7 +78,6 @@ function Notify.new(Ostrapic, config)
     })
     AddCorner(accent, UDim.new(0, 2))
     
-    -- Title
     Create("TextLabel", {
         Name = "Title",
         Text = config.Title or "Notification",
@@ -96,7 +91,6 @@ function Notify.new(Ostrapic, config)
         Parent = notification
     })
     
-    -- Content
     Create("TextLabel", {
         Name = "Content",
         Text = config.Content or "",
@@ -111,10 +105,8 @@ function Notify.new(Ostrapic, config)
         Parent = notification
     })
     
-    -- Animate in
     Tween(notification, {Position = UDim2.new(0, 0, 0, 0)}, 0.3)
     
-    -- Animate out after duration
     task.delay(config.Duration or 4, function()
         Tween(notification, {Position = UDim2.new(1, 20, 0, 0)}, 0.3)
         task.wait(0.35)
