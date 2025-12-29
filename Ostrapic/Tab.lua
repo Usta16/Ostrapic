@@ -33,7 +33,7 @@ function Tab.new(Window, config)
         Parent = Window.TabContainer
     })
     AddCorner(tabButton, UDim.new(0, 8))
-    self.Button = tabButton
+    self.TabButton = tabButton  -- CHANGED: was self.Button
     
     local tabLabel = Create("TextLabel", {
         Name = "Label",
@@ -47,7 +47,7 @@ function Tab.new(Window, config)
         Size = UDim2.new(1, -20, 1, 0),
         Parent = tabButton
     })
-    self.Label = tabLabel
+    self.TabLabel = tabLabel  -- CHANGED: was self.Label
     
     local content = Create("ScrollingFrame", {
         Name = self.Title .. "_Content",
@@ -100,13 +100,13 @@ function Tab:Select()
     
     for _, tab in pairs(Window.Tabs) do
         tab.Content.Visible = false
-        Tween(tab.Button, {BackgroundTransparency = 1}, 0.15)
-        Tween(tab.Label, {TextColor3 = Theme.TextDark}, 0.15)
+        Tween(tab.TabButton, {BackgroundTransparency = 1}, 0.15)  -- CHANGED: was tab.Button
+        Tween(tab.TabLabel, {TextColor3 = Theme.TextDark}, 0.15)  -- CHANGED: was tab.Label
     end
     
     self.Content.Visible = true
-    Tween(self.Button, {BackgroundTransparency = 0}, 0.15)
-    Tween(self.Label, {TextColor3 = Theme.Text}, 0.15)
+    Tween(self.TabButton, {BackgroundTransparency = 0}, 0.15)  -- CHANGED: was self.Button
+    Tween(self.TabLabel, {TextColor3 = Theme.Text}, 0.15)  -- CHANGED: was self.Label
     
     Window.CurrentTab = self
 end
