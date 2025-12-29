@@ -20,7 +20,6 @@ function Button.new(Tab, config)
     
     local buttonColor = config.Color or Theme.Primary
     
-    -- Container/Button
     local container = Create("TextButton", {
         Name = "Button",
         BackgroundColor3 = buttonColor,
@@ -32,7 +31,6 @@ function Button.new(Tab, config)
     AddCorner(container, UDim.new(0, 10))
     self.Container = container
     
-    -- Title
     Create("TextLabel", {
         Name = "Title",
         Text = config.Title or "Button",
@@ -44,7 +42,6 @@ function Button.new(Tab, config)
         Parent = container
     })
     
-    -- Hover effect
     container.MouseEnter:Connect(function()
         Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(1, 1, 1), 0.15)}, 0.1)
     end)
@@ -53,10 +50,9 @@ function Button.new(Tab, config)
         Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
     end)
     
-    -- Click effect
     container.MouseButton1Click:Connect(function()
         Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(0, 0, 0), 0.15)}, 0.05)
-        wait(0.05)
+        task.wait(0.05)
         Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
         self.Callback()
     end)
