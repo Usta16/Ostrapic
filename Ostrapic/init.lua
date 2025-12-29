@@ -6,28 +6,10 @@
 
 local RepoURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
 
--- HttpGet function that works with different executors
-local function HttpGet(url)
-    if syn and syn.request then
-        return syn.request({Url = url, Method = "GET"}).Body
-    elseif http and http.request then
-        return http.request({Url = url, Method = "GET"}).Body
-    elseif request then
-        return request({Url = url, Method = "GET"}).Body
-    elseif httpget then
-        return httpget(url)
-    elseif game.HttpGet then
-        return game:HttpGet(url)
-    elseif game.HttpGetAsync then
-        return game:HttpGetAsync(url)
-    else
-        error("No HttpGet function found!")
-    end
-end
-
 local function LoadModule(path)
+    local url = RepoURL .. path
     local success, result = pcall(function()
-        return loadstring(HttpGet(RepoURL .. path))()
+        return loadstring(game:HttpGet(url))()
     end)
     if success then
         return result
