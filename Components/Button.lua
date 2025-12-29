@@ -56,7 +56,7 @@ function Button.new(Tab, config)
     -- Click effect
     container.MouseButton1Click:Connect(function()
         Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(0, 0, 0), 0.15)}, 0.05)
-        task.wait(0.05)
+        wait(0.05)
         Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
         self.Callback()
     end)
