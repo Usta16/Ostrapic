@@ -22,11 +22,12 @@ local Ostrapic = {
     }
 }
 
--- Updated URL with Ostrapic folder
-local BaseURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/Ostrapic/"
+-- Base URLs - different paths for main files and components
+local RepoURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
+local MainURL = RepoURL .. "Ostrapic/"
+local ComponentsURL = RepoURL .. "Components/"
 
-local function LoadModule(path)
-    local url = BaseURL .. path .. ".lua"
+local function LoadModule(url)
     local success, result = pcall(function()
         return loadstring(game:HttpGet(url))()
     end)
@@ -40,24 +41,24 @@ local function LoadModule(path)
     end
 end
 
--- Load core modules
-Ostrapic.Utility = LoadModule("Utility")
-Ostrapic.Notify = LoadModule("Notify")
-Ostrapic.Window = LoadModule("Window")
-Ostrapic.Tab = LoadModule("Tab")
+-- Load core modules from Ostrapic folder
+Ostrapic.Utility = LoadModule(MainURL .. "Utility.lua")
+Ostrapic.Notify = LoadModule(MainURL .. "Notify.lua")
+Ostrapic.Window = LoadModule(MainURL .. "Window.lua")
+Ostrapic.Tab = LoadModule(MainURL .. "Tab.lua")
 
--- Load components
+-- Load components from Components folder
 Ostrapic.Components = {
-    Toggle = LoadModule("Components/Toggle"),
-    Slider = LoadModule("Components/Slider"),
-    Button = LoadModule("Components/Button"),
-    Dropdown = LoadModule("Components/Dropdown"),
-    Input = LoadModule("Components/Input"),
-    Keybind = LoadModule("Components/Keybind"),
-    Colorpicker = LoadModule("Components/Colorpicker"),
-    Section = LoadModule("Components/Section"),
-    Label = LoadModule("Components/Label"),
-    Paragraph = LoadModule("Components/Paragraph"),
+    Toggle = LoadModule(ComponentsURL .. "Toggle.lua"),
+    Slider = LoadModule(ComponentsURL .. "Slider.lua"),
+    Button = LoadModule(ComponentsURL .. "Button.lua"),
+    Dropdown = LoadModule(ComponentsURL .. "Dropdown.lua"),
+    Input = LoadModule(ComponentsURL .. "Input.lua"),
+    Keybind = LoadModule(ComponentsURL .. "Keybind.lua"),
+    Colorpicker = LoadModule(ComponentsURL .. "Colorpicker.lua"),
+    Section = LoadModule(ComponentsURL .. "Section.lua"),
+    Label = LoadModule(ComponentsURL .. "Label.lua"),
+    Paragraph = LoadModule(ComponentsURL .. "Paragraph.lua"),
 }
 
 function Ostrapic:CreateWindow(config)
