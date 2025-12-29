@@ -1,6 +1,5 @@
 --[[
     Ostrapic UI - Utility Module
-    Helper functions used across the library
 ]]
 
 local TweenService = game:GetService("TweenService")
@@ -8,7 +7,6 @@ local UserInputService = game:GetService("UserInputService")
 
 local Utility = {}
 
--- Create an instance with properties
 function Utility.Create(className, properties)
     local instance = Instance.new(className)
     local parent = nil
@@ -28,7 +26,6 @@ function Utility.Create(className, properties)
     return instance
 end
 
--- Tween an object
 function Utility.Tween(object, properties, duration)
     if not object or typeof(object) ~= "Instance" then 
         return nil 
@@ -45,7 +42,6 @@ function Utility.Tween(object, properties, duration)
     return tween
 end
 
--- Add corner radius
 function Utility.AddCorner(parent, radius)
     return Utility.Create("UICorner", {
         CornerRadius = radius or UDim.new(0, 8),
@@ -53,7 +49,6 @@ function Utility.AddCorner(parent, radius)
     })
 end
 
--- Add stroke/border
 function Utility.AddStroke(parent, color, thickness, transparency)
     return Utility.Create("UIStroke", {
         Color = color or Color3.fromRGB(45, 45, 55),
@@ -63,7 +58,6 @@ function Utility.AddStroke(parent, color, thickness, transparency)
     })
 end
 
--- Add padding
 function Utility.AddPadding(parent, top, bottom, left, right)
     return Utility.Create("UIPadding", {
         PaddingTop = UDim.new(0, top or 0),
@@ -74,7 +68,6 @@ function Utility.AddPadding(parent, top, bottom, left, right)
     })
 end
 
--- Add list layout
 function Utility.AddListLayout(parent, padding, direction)
     return Utility.Create("UIListLayout", {
         Padding = UDim.new(0, padding or 8),
@@ -84,7 +77,6 @@ function Utility.AddListLayout(parent, padding, direction)
     })
 end
 
--- Make a frame draggable
 function Utility.MakeDraggable(frame, handle)
     local dragging = false
     local dragInput = nil
