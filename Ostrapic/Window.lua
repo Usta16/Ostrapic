@@ -19,6 +19,7 @@ function Window.new(Ostrapic, config)
     self.Tabs = {}
     self.CurrentTab = nil
     self.Minimized = false
+    self.Visible = true
     
     local Create = self.Utility.Create
     local Tween = self.Utility.Tween
@@ -29,14 +30,12 @@ function Window.new(Ostrapic, config)
     
     local Player = Players.LocalPlayer
     
-    -- Create ScreenGui
     local screenGui = Create("ScreenGui", {
         Name = "OstrapicUI",
         ResetOnSpawn = false,
         ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     })
     
-    -- Try CoreGui first, fallback to PlayerGui
     local success = pcall(function()
         screenGui.Parent = game:GetService("CoreGui")
     end)
@@ -47,7 +46,6 @@ function Window.new(Ostrapic, config)
     
     self.ScreenGui = screenGui
     
-    -- Main Frame
     local main = Create("Frame", {
         Name = "Main",
         BackgroundColor3 = Theme.Background,
@@ -59,7 +57,6 @@ function Window.new(Ostrapic, config)
     AddStroke(main, Theme.Border, 1, 0.3)
     self.Main = main
     
-    -- Shadow
     Create("ImageLabel", {
         Name = "Shadow",
         BackgroundTransparency = 1,
@@ -74,7 +71,6 @@ function Window.new(Ostrapic, config)
         Parent = main
     })
     
-    -- Topbar
     local topbar = Create("Frame", {
         Name = "Topbar",
         BackgroundColor3 = Theme.Card,
@@ -83,7 +79,6 @@ function Window.new(Ostrapic, config)
     })
     AddCorner(topbar, UDim.new(0, 12))
     
-    -- Fix bottom corners
     Create("Frame", {
         Name = "TopbarFix",
         BackgroundColor3 = Theme.Card,
@@ -93,7 +88,6 @@ function Window.new(Ostrapic, config)
         Parent = topbar
     })
     
-    -- Title
     Create("TextLabel", {
         Name = "Title",
         Text = config.Title or "Ostrapic UI",
@@ -107,10 +101,8 @@ function Window.new(Ostrapic, config)
         Parent = topbar
     })
     
-    -- Make draggable
     MakeDraggable(main, topbar)
     
-    -- Window buttons container
     local buttonContainer = Create("Frame", {
         Name = "Buttons",
         BackgroundTransparency = 1,
@@ -127,7 +119,6 @@ function Window.new(Ostrapic, config)
         Parent = buttonContainer
     })
     
-    -- Close button
     local closeBtn = Create("TextButton", {
         Name = "Close",
         BackgroundColor3 = Theme.Error,
@@ -146,7 +137,6 @@ function Window.new(Ostrapic, config)
         screenGui:Destroy()
     end)
     
-    -- Minimize button
     local minBtn = Create("TextButton", {
         Name = "Minimize",
         BackgroundColor3 = Theme.Warning,
@@ -162,7 +152,6 @@ function Window.new(Ostrapic, config)
         Tween(main, {Size = targetSize}, 0.3)
     end)
     
-    -- Sidebar
     local sidebar = Create("Frame", {
         Name = "Sidebar",
         BackgroundColor3 = Theme.Card,
@@ -173,7 +162,6 @@ function Window.new(Ostrapic, config)
         Parent = main
     })
     
-    -- Sidebar corner fixes
     Create("Frame", {
         BackgroundColor3 = Theme.Card,
         Position = UDim2.new(1, -12, 0, 0),
@@ -190,7 +178,6 @@ function Window.new(Ostrapic, config)
         Parent = sidebar
     })
     
-    -- Tab list container
     local tabContainer = Create("ScrollingFrame", {
         Name = "TabList",
         BackgroundTransparency = 1,
@@ -211,7 +198,6 @@ function Window.new(Ostrapic, config)
     
     self.TabContainer = tabContainer
     
-    -- Content area
     local contentArea = Create("Frame", {
         Name = "ContentArea",
         BackgroundTransparency = 1,
@@ -225,12 +211,10 @@ function Window.new(Ostrapic, config)
     return self
 end
 
--- Create a new tab
 function Window:Tab(config)
     local Tab = self.Ostrapic.Tab.new(self, config)
     table.insert(self.Tabs, Tab)
     
-    -- Auto-select first tab
     if #self.Tabs == 1 then
         Tab:Select()
     end
@@ -238,17 +222,30 @@ function Window:Tab(config)
     return Tab
 end
 
--- Destroy the window
 function Window:Destroy()
     if self.ScreenGui then
         self.ScreenGui:Destroy()
     end
 end
 
--- Toggle visibility
 function Window:Toggle()
     if self.Main then
-        self.Main.Visible = not self.Main.Visible
+        self.Visible = not self.Visible
+        self.Main.Visible = self.Visible
+    end
+end
+
+function Window:Show()
+    if self.Main then
+        self.Visible = true
+        self.Main.Visible = true
+    end
+end
+
+function Window:Hide()
+    if self.Main then
+        self.Visible = false
+        self.Main.Visible = false
     end
 end
 
