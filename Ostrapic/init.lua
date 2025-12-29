@@ -1,9 +1,10 @@
 --[[
     Ostrapic UI Library v2.1
     Created by Usta16
-    
     GitHub: https://github.com/Usta16/Ostrapic
 ]]
+
+local RepoURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
 
 local Ostrapic = {
     Version = "2.1.0",
@@ -22,41 +23,30 @@ local Ostrapic = {
     }
 }
 
-local RepoURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
+-- Load Utility
+Ostrapic.Utility = loadstring(game:HttpGet(RepoURL .. "Ostrapic/Utility.lua"))()
 
-local function LoadModule(path)
-    local url = RepoURL .. path
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet(url))()
-    end)
-    
-    if success then
-        return result
-    else
-        warn("[Ostrapic] Failed to load: " .. url)
-        warn("[Ostrapic] Error: " .. tostring(result))
-        return nil
-    end
-end
+-- Load Notify
+Ostrapic.Notify = loadstring(game:HttpGet(RepoURL .. "Ostrapic/Notify.lua"))()
 
--- Load core modules from Ostrapic folder
-Ostrapic.Utility = LoadModule("Ostrapic/Utility.lua")
-Ostrapic.Notify = LoadModule("Ostrapic/Notify.lua")
-Ostrapic.Window = LoadModule("Ostrapic/Window.lua")
-Ostrapic.Tab = LoadModule("Ostrapic/Tab.lua")
+-- Load Window
+Ostrapic.Window = loadstring(game:HttpGet(RepoURL .. "Ostrapic/Window.lua"))()
 
--- Load components from Components folder (at root, not inside Ostrapic)
+-- Load Tab
+Ostrapic.Tab = loadstring(game:HttpGet(RepoURL .. "Ostrapic/Tab.lua"))()
+
+-- Load Components
 Ostrapic.Components = {
-    Toggle = LoadModule("Components/Toggle.lua"),
-    Slider = LoadModule("Components/Slider.lua"),
-    Button = LoadModule("Components/Button.lua"),
-    Dropdown = LoadModule("Components/Dropdown.lua"),
-    Input = LoadModule("Components/Input.lua"),
-    Keybind = LoadModule("Components/Keybind.lua"),
-    Colorpicker = LoadModule("Components/Colorpicker.lua"),
-    Section = LoadModule("Components/Section.lua"),
-    Label = LoadModule("Components/Label.lua"),
-    Paragraph = LoadModule("Components/Paragraph.lua"),
+    Section = loadstring(game:HttpGet(RepoURL .. "Components/Section.lua"))(),
+    Toggle = loadstring(game:HttpGet(RepoURL .. "Components/Toggle.lua"))(),
+    Slider = loadstring(game:HttpGet(RepoURL .. "Components/Slider.lua"))(),
+    Button = loadstring(game:HttpGet(RepoURL .. "Components/Button.lua"))(),
+    Dropdown = loadstring(game:HttpGet(RepoURL .. "Components/Dropdown.lua"))(),
+    Input = loadstring(game:HttpGet(RepoURL .. "Components/Input.lua"))(),
+    Keybind = loadstring(game:HttpGet(RepoURL .. "Components/Keybind.lua"))(),
+    Colorpicker = loadstring(game:HttpGet(RepoURL .. "Components/Colorpicker.lua"))(),
+    Label = loadstring(game:HttpGet(RepoURL .. "Components/Label.lua"))(),
+    Paragraph = loadstring(game:HttpGet(RepoURL .. "Components/Paragraph.lua"))(),
 }
 
 function Ostrapic:CreateWindow(config)
