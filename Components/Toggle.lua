@@ -22,7 +22,6 @@ function Toggle.new(Tab, config)
     
     local hasDesc = config.Desc ~= nil
     
-    -- Container
     local container = Create("Frame", {
         Name = "Toggle",
         BackgroundColor3 = Theme.Card,
@@ -32,7 +31,6 @@ function Toggle.new(Tab, config)
     AddCorner(container, UDim.new(0, 10))
     self.Container = container
     
-    -- Title
     Create("TextLabel", {
         Name = "Title",
         Text = config.Title or "Toggle",
@@ -46,7 +44,6 @@ function Toggle.new(Tab, config)
         Parent = container
     })
     
-    -- Description
     if hasDesc then
         Create("TextLabel", {
             Name = "Desc",
@@ -62,7 +59,6 @@ function Toggle.new(Tab, config)
         })
     end
     
-    -- Switch background
     local switch = Create("Frame", {
         Name = "Switch",
         BackgroundColor3 = self.Value and Theme.Primary or Theme.CardLight,
@@ -73,7 +69,6 @@ function Toggle.new(Tab, config)
     AddCorner(switch, UDim.new(1, 0))
     self.Switch = switch
     
-    -- Switch knob
     local knob = Create("Frame", {
         Name = "Knob",
         BackgroundColor3 = Theme.Text,
@@ -84,13 +79,11 @@ function Toggle.new(Tab, config)
     AddCorner(knob, UDim.new(1, 0))
     self.Knob = knob
     
-    -- Update visual state
     local function UpdateVisual()
         Tween(switch, {BackgroundColor3 = self.Value and Theme.Primary or Theme.CardLight}, 0.2)
         Tween(knob, {Position = self.Value and UDim2.new(1, -19, 0.5, -8) or UDim2.new(0, 3, 0.5, -8)}, 0.2)
     end
     
-    -- Click handler
     local clickButton = Create("TextButton", {
         Name = "ClickArea",
         BackgroundTransparency = 1,
@@ -105,12 +98,10 @@ function Toggle.new(Tab, config)
         self.Callback(self.Value)
     end)
     
-    -- Fire callback if default is true
     if self.Value then
         self.Callback(self.Value)
     end
     
-    -- Methods
     function self:Set(value)
         if self.Value ~= value then
             self.Value = value
