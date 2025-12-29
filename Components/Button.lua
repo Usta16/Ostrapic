@@ -52,8 +52,10 @@ function Button.new(Tab, config)
     
     container.MouseButton1Click:Connect(function()
         Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(0, 0, 0), 0.15)}, 0.05)
-        task.wait(0.05)
-        Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
+        spawn(function()
+            wait(0.05)
+            Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
+        end)
         self.Callback()
     end)
     
