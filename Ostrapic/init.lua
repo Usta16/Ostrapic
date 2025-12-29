@@ -55,7 +55,7 @@ local Ostrapic = {
 
 -- Load Core Modules
 Ostrapic.Utility = LoadModule("Ostrapic/Utility.lua")
-Ostrapic.Notify = LoadModule("Ostrapic/Notify.lua")
+Ostrapic.NotifyModule = LoadModule("Ostrapic/Notify.lua")
 Ostrapic.Window = LoadModule("Ostrapic/Window.lua")
 Ostrapic.Tab = LoadModule("Ostrapic/Tab.lua")
 
@@ -78,7 +78,7 @@ function Ostrapic:CreateWindow(config)
 end
 
 function Ostrapic:Notify(config)
-    return self.Notify.new(self, config)
+    return self.NotifyModule.new(self, config)
 end
 
 function Ostrapic:SetTheme(newTheme)
