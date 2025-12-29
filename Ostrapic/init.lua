@@ -9,8 +9,24 @@ local RepoURL = "https://raw.githubusercontent.com/Usta16/Ostrapic/main/"
 local function LoadModule(path)
     local url = RepoURL .. path
     local success, result = pcall(function()
-        return loadstring(game:HttpGet(url))()
+        local code = game:HttpGet(url)
+        
+        if type(code) ~= "string" then
+            error("HttpGet did not return a string, got: " .. type(code))
+        end
+        
+        if #code == 0 then
+            error("HttpGet returned empty string")
+        end
+        
+        local loadedFunc, loadErr = loadstring(code)
+        if not loadedFunc then
+            error("loadstring failed: " .. tostring(loadErr))
+        end
+        
+        return loadedFunc()
     end)
+    
     if success then
         return result
     else
