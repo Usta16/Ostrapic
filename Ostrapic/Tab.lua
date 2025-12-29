@@ -23,7 +23,6 @@ function Tab.new(Window, config)
     local AddCorner = self.Utility.AddCorner
     local Theme = self.Theme
     
-    -- Tab button in sidebar
     local tabButton = Create("TextButton", {
         Name = self.Title,
         BackgroundColor3 = Theme.CardLight,
@@ -36,7 +35,6 @@ function Tab.new(Window, config)
     AddCorner(tabButton, UDim.new(0, 8))
     self.Button = tabButton
     
-    -- Tab label
     local tabLabel = Create("TextLabel", {
         Name = "Label",
         Text = self.Title,
@@ -51,7 +49,6 @@ function Tab.new(Window, config)
     })
     self.Label = tabLabel
     
-    -- Tab content (scrolling frame)
     local content = Create("ScrollingFrame", {
         Name = self.Title .. "_Content",
         BackgroundTransparency = 1,
@@ -77,12 +74,10 @@ function Tab.new(Window, config)
     
     self.Content = content
     
-    -- Tab button click handler
     tabButton.MouseButton1Click:Connect(function()
         self:Select()
     end)
     
-    -- Hover effects
     tabButton.MouseEnter:Connect(function()
         if Window.CurrentTab ~= self then
             Tween(tabButton, {BackgroundTransparency = 0.5}, 0.1)
@@ -98,20 +93,17 @@ function Tab.new(Window, config)
     return self
 end
 
--- Select this tab
 function Tab:Select()
     local Window = self.Window
     local Tween = self.Utility.Tween
     local Theme = self.Theme
     
-    -- Deselect all other tabs
     for _, tab in pairs(Window.Tabs) do
         tab.Content.Visible = false
         Tween(tab.Button, {BackgroundTransparency = 1}, 0.15)
         Tween(tab.Label, {TextColor3 = Theme.TextDark}, 0.15)
     end
     
-    -- Select this tab
     self.Content.Visible = true
     Tween(self.Button, {BackgroundTransparency = 0}, 0.15)
     Tween(self.Label, {TextColor3 = Theme.Text}, 0.15)
@@ -119,7 +111,6 @@ function Tab:Select()
     Window.CurrentTab = self
 end
 
--- Add components
 function Tab:Section(config)
     return self.Components.Section.new(self, config)
 end
