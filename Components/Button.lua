@@ -9,38 +9,36 @@ function Button.new(Tab, config)
     config = config or {}
     
     local self = setmetatable({}, Button)
-    
     self.Callback = config.Callback or function() end
     
-    local Utility = Tab.Utility
     local Theme = Tab.Theme
-    local Create = Utility.Create
-    local Tween = Utility.Tween
-    local AddCorner = Utility.AddCorner
-    
+    local Tween = Tab.Utility.Tween
     local buttonColor = config.Color or Theme.Primary
     
-    local container = Create("TextButton", {
-        Name = "Button",
-        BackgroundColor3 = buttonColor,
-        Size = UDim2.new(1, 0, 0, 38),
-        Text = "",
-        AutoButtonColor = false,
-        Parent = Tab.Content
-    })
-    AddCorner(container, UDim.new(0, 10))
+    local container = Instance.new("TextButton")
+    container.Name = "Button"
+    container.BackgroundColor3 = buttonColor
+    container.Size = UDim2.new(1, 0, 0, 38)
+    container.Text = ""
+    container.AutoButtonColor = false
+    container.BorderSizePixel = 0
+    container.Parent = Tab.Content
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = container
+    
     self.Container = container
     
-    Create("TextLabel", {
-        Name = "Title",
-        Text = config.Title or "Button",
-        Font = Enum.Font.GothamBold,
-        TextSize = 14,
-        TextColor3 = Theme.Text,
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 1, 0),
-        Parent = container
-    })
+    local title = Instance.new("TextLabel")
+    title.Name = "Title"
+    title.Text = config.Title or "Button"
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 14
+    title.TextColor3 = Theme.Text
+    title.BackgroundTransparency = 1
+    title.Size = UDim2.new(1, 0, 1, 0)
+    title.Parent = container
     
     container.MouseEnter:Connect(function()
         Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(1, 1, 1), 0.15)}, 0.1)
@@ -51,12 +49,9 @@ function Button.new(Tab, config)
     end)
     
     container.MouseButton1Click:Connect(function()
-        Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(0, 0, 0), 0.15)}, 0.05)
-        spawn(function()
-            wait(0.05)
-            Tween(container, {BackgroundColor3 = buttonColor}, 0.1)
-        end)
+        Tween(container, {BackgroundColor3 = buttonColor:Lerp(Color3.new(0, 0, 0), 0.2)}, 0.05)
         self.Callback()
+        Tween(container, {BackgroundColor3 = buttonColor}, 0.15)
     end)
     
     return self
