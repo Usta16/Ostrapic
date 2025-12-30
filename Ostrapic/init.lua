@@ -1,5 +1,5 @@
 --[[
-    Ostrapic UI Library v2.1
+    Ostrapic UI Library v2.2
     Created by Usta16
     GitHub: https://github.com/Usta16/Ostrapic
 ]]
@@ -37,10 +37,11 @@ local function LoadModule(path)
 end
 
 local Ostrapic = {
-    Version = "2.1.0",
+    Version = "2.2.0",
     Creator = "Usta16",
     Theme = {
         Primary = Color3.fromRGB(99, 102, 241),
+        Secondary = Color3.fromRGB(129, 140, 248),
         Background = Color3.fromRGB(15, 15, 20),
         Card = Color3.fromRGB(22, 22, 30),
         CardLight = Color3.fromRGB(32, 32, 42),
@@ -50,11 +51,13 @@ local Ostrapic = {
         Success = Color3.fromRGB(34, 197, 94),
         Warning = Color3.fromRGB(251, 191, 36),
         Error = Color3.fromRGB(239, 68, 68),
+        Info = Color3.fromRGB(59, 130, 246),
     }
 }
 
 -- Load Core Modules
 Ostrapic.Utility = LoadModule("Ostrapic/Utility.lua")
+Ostrapic.Icons = LoadModule("Ostrapic/Icons.lua")
 Ostrapic.NotifyModule = LoadModule("Ostrapic/Notify.lua")
 Ostrapic.Window = LoadModule("Ostrapic/Window.lua")
 Ostrapic.Tab = LoadModule("Ostrapic/Tab.lua")
@@ -87,6 +90,19 @@ function Ostrapic:SetTheme(newTheme)
             self.Theme[key] = value
         end
     end
+end
+
+-- Icon helper functions
+function Ostrapic:GetIcon(name)
+    return self.Icons.Get(name)
+end
+
+function Ostrapic:AddIcon(name, assetId)
+    self.Icons.Add(name, assetId)
+end
+
+function Ostrapic:AddIcons(iconTable)
+    self.Icons.AddBulk(iconTable)
 end
 
 return Ostrapic
