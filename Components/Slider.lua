@@ -1,5 +1,5 @@
 --[[
-    Ostrapic UI - Slider Component
+    Ostrapic UI - Slider Component (Thin Line Style)
 ]]
 
 local UserInputService = game:GetService("UserInputService")
@@ -32,11 +32,20 @@ function Slider.new(Tab, config)
     local container = Create("Frame", {
         Name = "Slider",
         BackgroundColor3 = Theme.Card,
-        Size = UDim2.new(1, 0, 0, hasDesc and 65 or 50),
+        Size = UDim2.new(1, 0, 0, hasDesc and 70 or 55),
         Parent = Tab.Content
     })
     AddCorner(container, UDim.new(0, 10))
     self.Container = container
+    
+    -- Title row
+    local titleRow = Create("Frame", {
+        Name = "TitleRow",
+        BackgroundTransparency = 1,
+        Position = UDim2.new(0, 14, 0, 10),
+        Size = UDim2.new(1, -28, 0, 18),
+        Parent = container
+    })
     
     -- Title
     Create("TextLabel", {
@@ -47,12 +56,11 @@ function Slider.new(Tab, config)
         TextColor3 = Theme.Text,
         TextXAlignment = Enum.TextXAlignment.Left,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 14, 0, 8),
-        Size = UDim2.new(0.6, 0, 0, 18),
-        Parent = container
+        Size = UDim2.new(0.7, 0, 1, 0),
+        Parent = titleRow
     })
     
-    -- Value label
+    -- Value display
     local valueLabel = Create("TextLabel", {
         Name = "Value",
         Text = tostring(self.Value),
@@ -61,9 +69,9 @@ function Slider.new(Tab, config)
         TextColor3 = Theme.Primary,
         TextXAlignment = Enum.TextXAlignment.Right,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0.6, 0, 0, 8),
-        Size = UDim2.new(0.4, -14, 0, 18),
-        Parent = container
+        Position = UDim2.new(0.7, 0, 0, 0),
+        Size = UDim2.new(0.3, 0, 1, 0),
+        Parent = titleRow
     })
     self.ValueLabel = valueLabel
     
@@ -77,24 +85,24 @@ function Slider.new(Tab, config)
             TextColor3 = Theme.TextDark,
             TextXAlignment = Enum.TextXAlignment.Left,
             BackgroundTransparency = 1,
-            Position = UDim2.new(0, 14, 0, 24),
+            Position = UDim2.new(0, 14, 0, 28),
             Size = UDim2.new(1, -28, 0, 14),
             Parent = container
         })
     end
     
-    -- Track
+    -- Slider track (thin line)
     local track = Create("Frame", {
         Name = "Track",
         BackgroundColor3 = Theme.CardLight,
-        Position = UDim2.new(0, 14, 1, -18),
-        Size = UDim2.new(1, -28, 0, 6),
+        Position = UDim2.new(0, 14, 1, -20),
+        Size = UDim2.new(1, -28, 0, 4),
         Parent = container
     })
     AddCorner(track, UDim.new(1, 0))
     self.Track = track
     
-    -- Fill
+    -- Filled portion
     local initialFill = (self.Value - self.Min) / (self.Max - self.Min)
     local fill = Create("Frame", {
         Name = "Fill",
@@ -105,10 +113,10 @@ function Slider.new(Tab, config)
     AddCorner(fill, UDim.new(1, 0))
     self.Fill = fill
     
-    -- Knob
+    -- Knob (circle)
     local knob = Create("Frame", {
         Name = "Knob",
-        BackgroundColor3 = Theme.Text,
+        BackgroundColor3 = Theme.Primary,
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(initialFill, 0, 0.5, 0),
         Size = UDim2.new(0, 14, 0, 14),
@@ -117,6 +125,17 @@ function Slider.new(Tab, config)
     })
     AddCorner(knob, UDim.new(1, 0))
     self.Knob = knob
+    
+    -- Knob inner dot
+    local knobInner = Create("Frame", {
+        Name = "Inner",
+        BackgroundColor3 = Theme.Text,
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        Size = UDim2.new(0, 6, 0, 6),
+        Parent = knob
+    })
+    AddCorner(knobInner, UDim.new(1, 0))
     
     -- Dragging logic
     local dragging = false
@@ -137,11 +156,12 @@ function Slider.new(Tab, config)
         end
     end
     
-    -- Click area
+    -- Click/drag detection
     local clickButton = Create("TextButton", {
         Name = "ClickArea",
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 1, 0),
+        Position = UDim2.new(0, 0, 0, -8),
+        Size = UDim2.new(1, 0, 1, 16),
         Text = "",
         ZIndex = 3,
         Parent = track
@@ -151,6 +171,8 @@ function Slider.new(Tab, config)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or 
            input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
+            -- Grow knob on press
+            Tween(knob, {Size = UDim2.new(0, 18, 0, 18)}, 0.1)
             UpdateSlider(input.Position.X)
         end
     end)
@@ -159,6 +181,8 @@ function Slider.new(Tab, config)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or 
            input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
+            -- Shrink knob on release
+            Tween(knob, {Size = UDim2.new(0, 14, 0, 14)}, 0.1)
         end
     end)
     
