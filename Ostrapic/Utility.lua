@@ -77,6 +77,19 @@ function Utility.AddListLayout(parent, padding, direction)
     })
 end
 
+function Utility.CreateIcon(parent, iconId, size, color)
+    local icon = Utility.Create("ImageLabel", {
+        Name = "Icon",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, size or 16, 0, size or 16),
+        Image = iconId or "",
+        ImageColor3 = color or Color3.fromRGB(255, 255, 255),
+        ScaleType = Enum.ScaleType.Fit,
+        Parent = parent
+    })
+    return icon
+end
+
 function Utility.MakeDraggable(frame, handle)
     local dragging = false
     local dragInput = nil
