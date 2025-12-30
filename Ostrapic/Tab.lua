@@ -14,15 +14,18 @@ function Tab.new(Window, config)
     self.Ostrapic = Window.Ostrapic
     self.Theme = Window.Theme
     self.Utility = Window.Utility
+    self.Icons = Window.Ostrapic.Icons
     self.Components = Window.Components
     self.Elements = {}
     self.Title = config.Title or "Tab"
+    self.Icon = config.Icon
     
     local Create = self.Utility.Create
     local Tween = self.Utility.Tween
     local AddCorner = self.Utility.AddCorner
     local Theme = self.Theme
     
+    -- Tab button
     local tabButton = Create("TextButton", {
         Name = self.Title,
         BackgroundColor3 = Theme.CardLight,
@@ -33,8 +36,44 @@ function Tab.new(Window, config)
         Parent = Window.TabContainer
     })
     AddCorner(tabButton, UDim.new(0, 8))
-    self.TabButton = tabButton  -- CHANGED: was self.Button
+    self.Button = tabButton
     
+    -- Tab content holder
+    local tabContent = Create("Frame", {
+        Name = "TabContent",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 1, 0),
+        Parent = tabButton
+    })
+    
+    Create("UIListLayout", {
+        FillDirection = Enum.FillDirection.Horizontal,
+        VerticalAlignment = Enum.VerticalAlignment.Center,
+        Padding = UDim.new(0, 8),
+        Parent = tabContent
+    })
+    
+    Create("UIPadding", {
+        PaddingLeft = UDim.new(0, 12),
+        Parent = tabContent
+    })
+    
+    -- Icon (if provided)
+    if config.Icon then
+        local iconId = self.Icons.Get(config.Icon)
+        local iconImage = Create("ImageLabel", {
+            Name = "Icon",
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 16, 0, 16),
+            Image = iconId,
+            ImageColor3 = Theme.TextDark,
+            ScaleType = Enum.ScaleType.Fit,
+            Parent = tabContent
+        })
+        self.IconImage = iconImage
+    end
+    
+    -- Tab label
     local tabLabel = Create("TextLabel", {
         Name = "Label",
         Text = self.Title,
@@ -43,12 +82,12 @@ function Tab.new(Window, config)
         TextColor3 = Theme.TextDark,
         TextXAlignment = Enum.TextXAlignment.Left,
         BackgroundTransparency = 1,
-        Position = UDim2.new(0, 12, 0, 0),
-        Size = UDim2.new(1, -20, 1, 0),
-        Parent = tabButton
+        Size = UDim2.new(1, -30, 1, 0),
+        Parent = tabContent
     })
-    self.TabLabel = tabLabel  -- CHANGED: was self.Label
+    self.Label = tabLabel
     
+    -- Scrolling content area
     local content = Create("ScrollingFrame", {
         Name = self.Title .. "_Content",
         BackgroundTransparency = 1,
@@ -74,6 +113,7 @@ function Tab.new(Window, config)
     
     self.Content = content
     
+    -- Tab selection
     tabButton.MouseButton1Click:Connect(function()
         self:Select()
     end)
@@ -100,13 +140,19 @@ function Tab:Select()
     
     for _, tab in pairs(Window.Tabs) do
         tab.Content.Visible = false
-        Tween(tab.TabButton, {BackgroundTransparency = 1}, 0.15)  -- CHANGED: was tab.Button
-        Tween(tab.TabLabel, {TextColor3 = Theme.TextDark}, 0.15)  -- CHANGED: was tab.Label
+        Tween(tab.Button, {BackgroundTransparency = 1}, 0.15)
+        Tween(tab.Label, {TextColor3 = Theme.TextDark}, 0.15)
+        if tab.IconImage then
+            Tween(tab.IconImage, {ImageColor3 = Theme.TextDark}, 0.15)
+        end
     end
     
     self.Content.Visible = true
-    Tween(self.TabButton, {BackgroundTransparency = 0}, 0.15)  -- CHANGED: was self.Button
-    Tween(self.TabLabel, {TextColor3 = Theme.Text}, 0.15)  -- CHANGED: was self.Label
+    Tween(self.Button, {BackgroundTransparency = 0}, 0.15)
+    Tween(self.Label, {TextColor3 = Theme.Text}, 0.15)
+    if self.IconImage then
+        Tween(self.IconImage, {ImageColor3 = Theme.Primary}, 0.15)
+    end
     
     Window.CurrentTab = self
 end
